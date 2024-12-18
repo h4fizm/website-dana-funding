@@ -1,26 +1,22 @@
 const express = require("express");
 const router = express.Router();
+const feedbackRoutes = require("./feedback");
 const db = require("../config/db");
 
-// Test koneksi database
+// Rute untuk feedback API
+router.use("/feedbacks", feedbackRoutes);
+
+// Rute untuk test koneksi database
 router.get("/test-db", (req, res) => {
   db.query("SELECT 1 + 1 AS solution", (err, results) => {
     if (err) {
-      res.status(500).json({ error: "Database error" });
-    } else {
-      res.json({ message: "Database connected!", result: results[0].solution });
+      console.error("Error connecting to the database:", err);
+      return res.status(500).json({ error: "Database connection failed" });
     }
-  });
-});
-
-// Tambahkan rute lain di sini
-router.get("/donations", (req, res) => {
-  db.query("SELECT * FROM donations", (err, results) => {
-    if (err) {
-      res.status(500).json({ error: "Failed to fetch donations" });
-    } else {
-      res.json({ donations: results });
-    }
+    res.json({
+      message: "Database connected successfully!",
+      solution: results[0].solution,
+    });
   });
 });
 

@@ -17,10 +17,14 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      crowdfund_image: {
+        type: Sequelize.STRING,
+        allowNull: true, // Image can be optional
+      },
       status: {
         type: Sequelize.ENUM("DIBUKA", "DITUTUP"),
         allowNull: false,
-        defaultValue: "DIBUKA", // Default status is 'DIBUKA'
+        defaultValue: "DIBUKA",
       },
       id_user: {
         type: Sequelize.INTEGER,
