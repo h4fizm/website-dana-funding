@@ -8,6 +8,7 @@ module.exports = {
         payment_method: "QRIS", // Metode pembayaran
         bank: null, // Bank kosong karena menggunakan QRIS
         id_crowdfund: 1, // ID crowdfund, pastikan ini sesuai dengan tabel `crowdfunds`
+        id_user: 2,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -15,7 +16,8 @@ module.exports = {
         value: 1000000,
         payment_method: "TF",
         bank: "BCA", // Bank diisi karena metode TF
-        id_crowdfund: 1,
+        id_crowdfund: 2,
+        id_user: 2,
         created_at: new Date(),
         updated_at: new Date(),
       },
