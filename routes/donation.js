@@ -3,6 +3,6 @@ const router = express.Router();
 const DonationController = require("../controllers/DonationController");
 
 // Tambahkan rute untuk menampilkan halaman donasi
-router.get("/donation", DonationController.getDonationDetail);
+router.get("/donation/:id", DonationController.getDonationDetails);
 
 module.exports = router;

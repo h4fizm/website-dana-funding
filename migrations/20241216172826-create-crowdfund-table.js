@@ -21,6 +21,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true, // Image can be optional
       },
+      target_dana: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       status: {
         type: Sequelize.ENUM("DIBUKA", "DITUTUP"),
         allowNull: false,

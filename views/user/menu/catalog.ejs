@@ -1,3 +1,12 @@
+<% 
+function formatRupiah(amount) {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Format with dots
+}
+%>
+
+<section class="py-3" id="section-program-donasi-dibuka">
+<!-- views/user/menu/catalog.ejs -->
+
 <section class="py-3" id="section-program-donasi-dibuka">
   <!-- START DAFTAR DONASI DIBUKA -->
   <section class="py-3">
@@ -8,232 +17,72 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-plain">
-            <div class="card-header p-0 position-relative">
-              <a class="d-block blur-shadow-image">
-                <img
-                  src="/img/examples/testimonial-6-2.jpg"
-                  alt="img-blur-shadow"
-                  class="img-fluid shadow border-radius-lg"
-                  loading="lazy"
-                />
-              </a>
-            </div>
-            <div class="card-body px-0">
-              <h5>
-                <a href="javascript:;" class="text-dark font-weight-bold">
-                  Rover raised $65 million
+        <% crowdfunds.forEach(function(crowdfund) { %>
+          <div class="col-lg-3 col-sm-6">
+            <div class="card card-plain">
+              <div class="card-header p-0 position-relative">
+                <a class="d-block blur-shadow-image">
+                  <img src="<%= crowdfund.crowdfund_image %>" alt="<%= crowdfund.crowdfund_title %>" class="img-fluid shadow border-radius-lg" loading="lazy">
                 </a>
-              </h5>
-
-              <!-- Badge status -->
-              <span class="badge bg-success mb-3">DIBUKA</span>
-
-              <!-- Progress bar dana -->
-              <div class="mb-3">
-                <small class="text-muted">Dana Terkumpul</small>
-                <div class="progress progress-sm">
-                  <div
-                    class="progress-bar bg-info"
-                    role="progressbar"
-                    style="width: 60%"
-                    aria-valuenow="60"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <small class="text-muted">Rp 6.000.000 / Rp 10.000.000</small>
               </div>
+              <div class="card-body px-0">
+                <h5>
+                  <a href="javascript:;" class="text-dark font-weight-bold">
+                    <%= crowdfund.crowdfund_title %>
+                  </a>
+                </h5>
 
-              <!-- Button donasi -->
-              <div class="text-end">
-                <a href="/donation" class="btn btn-info btn-sm">Detail</a>
+                <!-- Badge status -->
+                <span class="badge bg-<%= crowdfund.status === 'DIBUKA' ? 'success' : 'danger' %> mb-3"><%= crowdfund.status %></span>
+
+                <!-- Progress bar dana -->
+                <div class="mb-3">
+                  <small class="text-muted">Dana Terkumpul</small>
+                  <div class="progress progress-sm">
+                    <div 
+                      class="progress-bar bg-info"
+                      role="progressbar" 
+                      style="width: <%= (crowdfund.danaTerkumpul / crowdfund.target_dana) * 100 %>%" 
+                      aria-valuenow="<%= (crowdfund.danaTerkumpul / crowdfund.target_dana) * 100 %>" 
+                      aria-valuemin="0" 
+                      aria-valuemax="100">
+                    </div>
+                  </div>
+                  <small class="text-muted">Rp <%= formatRupiah(crowdfund.danaTerkumpul) %> / Rp <%= formatRupiah(crowdfund.target_dana) %></small>
+                </div>
+
+                <!-- Button donasi (enabled) -->
+                <div class="text-end">
+                  <a href="/donation/<%= crowdfund.id %>">
+                    <button class="btn btn-info btn-sm">
+                      Detail
+                    </button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-plain">
-            <div class="card-header p-0 position-relative">
-              <a class="d-block blur-shadow-image">
-                <img
-                  src="/img/examples/testimonial-6-2.jpg"
-                  alt="img-blur-shadow"
-                  class="img-fluid shadow border-radius-lg"
-                  loading="lazy"
-                />
-              </a>
-            </div>
-            <div class="card-body px-0">
-              <h5>
-                <a href="javascript:;" class="text-dark font-weight-bold">
-                  Rover raised $65 million
-                </a>
-              </h5>
-
-              <!-- Badge status -->
-              <span class="badge bg-success mb-3">DIBUKA</span>
-
-              <!-- Progress bar dana -->
-              <div class="mb-3">
-                <small class="text-muted">Dana Terkumpul</small>
-                <div class="progress progress-sm">
-                  <div
-                    class="progress-bar bg-info"
-                    role="progressbar"
-                    style="width: 60%"
-                    aria-valuenow="60"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <small class="text-muted">Rp 6.000.000 / Rp 10.000.000</small>
-              </div>
-
-              <!-- Button Detail -->
-              <div class="text-end">
-                <button class="btn btn-info btn-sm">Detail</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-plain">
-            <div class="card-header p-0 position-relative">
-              <a class="d-block blur-shadow-image">
-                <img
-                  src="/img/examples/testimonial-6-2.jpg"
-                  alt="img-blur-shadow"
-                  class="img-fluid shadow border-radius-lg"
-                  loading="lazy"
-                />
-              </a>
-            </div>
-            <div class="card-body px-0">
-              <h5>
-                <a href="javascript:;" class="text-dark font-weight-bold">
-                  Rover raised $65 million
-                </a>
-              </h5>
-
-              <!-- Badge status -->
-              <span class="badge bg-success mb-3">DIBUKA</span>
-
-              <!-- Progress bar dana -->
-              <div class="mb-3">
-                <small class="text-muted">Dana Terkumpul</small>
-                <div class="progress progress-sm">
-                  <div
-                    class="progress-bar bg-info"
-                    role="progressbar"
-                    style="width: 60%"
-                    aria-valuenow="60"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <small class="text-muted">Rp 6.000.000 / Rp 10.000.000</small>
-              </div>
-
-              <!-- Button Detail -->
-              <div class="text-end">
-                <button class="btn btn-info btn-sm">Detail</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-plain">
-            <div class="card-header p-0 position-relative">
-              <a class="d-block blur-shadow-image">
-                <img
-                  src="/img/examples/testimonial-6-2.jpg"
-                  alt="img-blur-shadow"
-                  class="img-fluid shadow border-radius-lg"
-                  loading="lazy"
-                />
-              </a>
-            </div>
-            <div class="card-body px-0">
-              <h5>
-                <a href="javascript:;" class="text-dark font-weight-bold">
-                  Rover raised $65 million
-                </a>
-              </h5>
-
-              <!-- Badge status -->
-              <span class="badge bg-success mb-3">DIBUKA</span>
-
-              <!-- Progress bar dana -->
-              <div class="mb-3">
-                <small class="text-muted">Dana Terkumpul</small>
-                <div class="progress progress-sm">
-                  <div
-                    class="progress-bar bg-info"
-                    role="progressbar"
-                    style="width: 60%"
-                    aria-valuenow="60"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-                <small class="text-muted">Rp 6.000.000 / Rp 10.000.000</small>
-              </div>
-
-              <!-- Button Detail -->
-              <div class="text-end">
-                <button class="btn btn-info btn-sm">Detail</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Add other cards here similar to above -->
+        <% }); %>
       </div>
 
       <!-- Pagination -->
       <div class="row">
         <div class="col-12 text-center">
-          <nav>
-            <ul class="pagination pagination-info justify-content-center">
-              <li class="page-item">
-                <a class="page-link" href="#link" aria-label="Previous">
-                  <span aria-hidden="true">
-                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
-                  </span>
-                </a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#link">1</a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="#link">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#link">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#link">4</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#link">5</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#link" aria-label="Next">
-                  <span aria-hidden="true">
-                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                  </span>
-                </a>
-              </li>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
             </ul>
           </nav>
         </div>
       </div>
     </div>
   </section>
-  <!-- END DAFTAR Detail DIBUKA -->
+  <!-- END DAFTAR DONASI DIBUKA -->
 </section>
-<!-- END DAFTAR DONASI DIBUKA -->
 
 <!-- START DAFTAR DONASI -->
 <section class="py-3" id="section-program-donasi">
