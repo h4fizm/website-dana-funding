@@ -1,3 +1,9 @@
+<% 
+function formatRupiah(amount) {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Format with dots
+}
+%>
+
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
   <head>
@@ -8,7 +14,7 @@
     />
     <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png" />
     <link rel="icon" type="image/png" href="/img/favicon.png" />
-    <title>Detail Program Donasi</title>
+    <title>Donation Detail</title>
     <!-- Fonts and icons -->
     <link
       rel="stylesheet"
@@ -49,7 +55,6 @@
                 style="
                   background-image: url('<%= crowdfund.crowdfund_image %>');
                   background-size: cover;
-                  background-position: center;
                 "
                 loading="lazy"
               ></div>
@@ -59,42 +64,40 @@
             >
               <div
                 class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
-                style="height: auto"
+                style="height: 500px"
               >
-              <div
-              class="card-header p-0 position-relative mt-2 mx-2 z-index-2 bg-transparent"
-            >
-              <div class="bg-dark shadow-dark border-radius-md p-3">
-                <h5 class="text-white text-primary mb-0">
-                  Detail Program Donasi
-                </h5>
-              </div>
-            </div>
-               
-                <div class="card-body">
-                  <div class="card-body">
-                    <!-- Menambahkan judul program donasi -->
-                    <h2 class="text-start mb-4" style="font-size: 2rem;"><%= crowdfund.crowdfund_title %></h2>
-                    <p class="text-muted" style="font-size: 0.875rem; text-align: justify;">
-                      <%= crowdfund.crowdfund_description %>  
-                    </p>
+                <div
+                  class="card-header p-0 position-relative mt-2 mx-2 z-index-2 bg-transparent"
+                >
+                  <div class="bg-dark shadow-dark border-radius-md p-3">
+                    <h5 class="text-white text-primary mb-0">
+                      <%= donation.title %>
+                    </h5>
+                    <!-- <p class="text-white text-sm mb-0">
+                      <%= donation.description %>
+                    </p> -->
                   </div>
+                </div>
+                <div class="card-body">
+                  <p class="pb-3">
+                    <strong><%= crowdfund.crowdfund_title %></strong>
+                  </p>
                   <p class="">
-                    <strong>Jumlah Dana Terkumpul:</strong> Rp 10.000.000
+                    <strong>Jumlah Dana Terkumpul:</strong> Rp <%= formatRupiah(donation.danaTerkumpul) %>
                   </p>
                   <p>
-                    <strong>Target Dana:</strong> Rp 50.000.000
+                    <strong>Target Dana:</strong> Rp <%= formatRupiah(crowdfund.target_dana) %>
                   </p>
                   <div class="progress" style="height: 18px">
                     <div
                       class="progress-bar bg-info"
-                      style="width: 20%; height: 100%"
+                      style="width: <%= (donation.danaTerkumpul / crowdfund.target_dana) * 100 %>%; height: 100%"
                       role="progressbar"
-                      aria-valuenow="20"
+                      aria-valuenow="<%= (donation.danaTerkumpul / crowdfund.target_dana) * 100 %>"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >
-                      20%
+                      <%= Math.round((donation.danaTerkumpul / crowdfund.target_dana) * 100) %>%
                     </div>
                   </div>
                   <div class="row mt-4">

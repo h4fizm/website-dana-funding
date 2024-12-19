@@ -36,6 +36,8 @@ function isAdmin(req, res, next) {
   res.redirect("/login");
 }
 
+
+
 // Rute utama
 app.get("/", (req, res) => res.render("index"));
 

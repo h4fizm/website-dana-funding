@@ -36,6 +36,10 @@ function isAdmin(req, res, next) {
   res.redirect("/login");
 }
 
+app.get("/test-payment", (req, res) => {
+  res.render("user/menu/payment");
+});
+
 // Rute utama
 app.get("/", (req, res) => res.render("index"));
 

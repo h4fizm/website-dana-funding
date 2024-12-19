@@ -36,6 +36,9 @@ function isAdmin(req, res, next) {
   res.redirect("/login");
 }
 
+console.log("Views directory:", path.join(__dirname, "views"));
+
+
 // Rute utama
 app.get("/", (req, res) => res.render("index"));
 

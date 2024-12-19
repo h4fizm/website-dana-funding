@@ -65,8 +65,8 @@ app.use("/api/feedbacks", feedbackRoutes);
 const donationRoutes = require("./routes/donation");
 app.use("/", donationRoutes);
 
-const paymentRoutes = require("./routes/payment");
-app.use("/", paymentRoutes);
+const paymentRoutes = require("./routes/payment"); // Sesuaikan path dengan lokasi file route
+app.use(paymentRoutes);
 
 // Admin route
 app.get("/admin/dashboard", isAdmin, (req, res) =>
