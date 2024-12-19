@@ -1,0 +1,12 @@
+const express = require("express");
+const AdminController = require("../controllers/AdminController");
+const router = express.Router();
+
+router.get("/donations", AdminController.donations);
+router.get("/feedback", AdminController.feedback);
+router.get("/users", AdminController.users);
+router.get("/profile", AdminController.profile);
+router.get("/add-user", AdminController.addUser);
+router.get("/add-donation", AdminController.addDonation);
+
+module.exports = router;
