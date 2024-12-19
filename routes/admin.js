@@ -15,7 +15,7 @@ router.post("/add-donation", upload, AdminController.addDonation); // Handle fil
 
 router.get("/feedback", AdminController.feedback);
 
-router.post('/admin/delete-comment/:id', AdminController.deleteComment);
+router.delete("/delete-comment/:id", AdminController.deleteComment);
 
 router.get("/profile", AdminController.profile);
 

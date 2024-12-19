@@ -156,9 +156,11 @@ function formatRupiah(amount) {
               <% comments.forEach((comment, index) => { %>
                 <div class="comment">
                   <p><strong><%= index + 1 %>:</strong> <%= comment.comment %></p>
-                  <form action="/admin/delete-comment/<%= comment.id %>" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                  </form>
+                  <form action="/admin/delete-comment/<%= comment.id %>?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus komentar ini?');">
+                      Delete
+                    </button>
+                  </form>              
                 </div>
               <% }); %>
             <% } %>
