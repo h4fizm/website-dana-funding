@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+    <!-- Tambahkan partial head jika diperlukan -->
+  </head>
+  <body class="g-sidenav-show bg-gray-100">
+    <%- include('partials/sidebar') %>
+    <!-- Sidebar -->
+    <main
+      class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+    >
+      <%- include('partials/header') %>
+      <!-- Header/Navbar -->
+
+      <div class="container-fluid py-2">
+        <!-- Konten Utama -->
+        <%- include('menu/donationtable') %>
+        <!-- Content -->
+      </div>
+
+      <%- include('partials/footer') %>
+      <!-- Footer -->
+    </main>
+    <script src="/js/core/popper.min.js"></script>
+    <script src="/js/core/bootstrap.min.js"></script>
+    <script src="/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="/js/material-dashboard.min.js?v=3.2.0"></script>
+  </body>
+</html>

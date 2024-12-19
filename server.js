@@ -1,10 +1,15 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const db = require("./config/db");
-require("dotenv").config();
+const adminRouter = require("./routes/admin");
 
 const app = express();
+const methodOverride = require("method-override");
+
+// Middleware untuk override method HTTP
+app.use(methodOverride("_method"));
 
 // Set EJS sebagai template engine
 app.set("view engine", "ejs");
@@ -70,9 +75,10 @@ const paymentRoutes = require("./routes/payment");
 app.use("/", paymentRoutes);
 
 // Admin route
-app.get("/admin/dashboard", isAdmin, (req, res) =>
-  res.render("admin/dashboard")
-);
+app.use("/admin", adminRouter);
+// app.get("/admin/dashboard", isAdmin, (req, res) =>
+//   res.render("admin/dashboard")
+// );
 
 // Logout
 app.post("/logout", (req, res) => {

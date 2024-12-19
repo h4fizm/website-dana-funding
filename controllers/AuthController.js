@@ -25,7 +25,7 @@ exports.login = async (req, res) => {
 
     // Redirect berdasarkan role
     if (user.role === "admin") {
-      return res.redirect("/admin/dashboard");
+      return res.redirect("/admin/donations");
     } else {
       return res.redirect("/user/catalog");
     }
