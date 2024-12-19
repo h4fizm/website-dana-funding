@@ -1,14 +1,23 @@
 // routes/admin.js
 const express = require("express");
 const AdminController = require("../controllers/AdminController");
+const upload = require("../config/upload"); // Import the upload configuration
 const router = express.Router();
 
 // Rute GET untuk menampilkan halaman
 router.get("/donations", AdminController.donations);
+router.get("/add-donation", AdminController.addDonation);
+router.get("/detail-crowdfund/:id", AdminController.detailCrowdfund);
+router.get("/delete-crowdfund/:id", AdminController.deleteCrowdfund);
+router.get("/edit-crowdfund/:id", AdminController.editCrowdfund);
+// Use the upload middleware for the POST route
+router.post("/add-donation", upload, AdminController.addDonation); // Handle file upload
+
 router.get("/feedback", AdminController.feedback);
 
+router.post('/admin/delete-comment/:id', AdminController.deleteComment);
+
 router.get("/profile", AdminController.profile);
-router.get("/add-donation", AdminController.addDonation);
 
 router.get("/users", AdminController.users); // Menampilkan daftar user
 router.get("/add-user", AdminController.addUser); // Menampilkan form tambah user

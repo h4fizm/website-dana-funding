@@ -30,14 +30,6 @@ module.exports = {
         allowNull: false,
         defaultValue: "DIBUKA",
       },
-      id_user: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "users", // Referencing the 'users' table
-          key: "id",
-        },
-        allowNull: false,
-      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
