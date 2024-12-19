@@ -24,24 +24,25 @@ class AdminController {
     }
   }
 
-   // Fungsi untuk menghapus feedback
-static deleteFeedback(req, res) {
-  const feedbackId = req.params.id;
-  console.log("Menghapus feedback dengan ID:", feedbackId);
+  // Fungsi untuk menghapus feedback
+  static deleteFeedback(req, res) {
+    const feedbackId = req.params.id;
+    console.log("Menghapus feedback dengan ID:", feedbackId);
 
-  // Hapus feedback berdasarkan ID
-  Feedback.destroy({
-    where: { id: feedbackId },
-  })
-    .then(() => {
-      res.status(200).json({ message: "Feedback berhasil dihapus" }); // Kirim respons sukses
+    // Hapus feedback berdasarkan ID
+    Feedback.destroy({
+      where: { id: feedbackId },
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ message: "Terjadi kesalahan saat menghapus feedback." }); // Kirim respons error
-    });
-}
-
+      .then(() => {
+        res.status(200).json({ message: "Feedback berhasil dihapus" }); // Kirim respons sukses
+      })
+      .catch((err) => {
+        console.error(err);
+        res
+          .status(500)
+          .json({ message: "Terjadi kesalahan saat menghapus feedback." }); // Kirim respons error
+      });
+  }
 
   static profile(req, res) {
     res.render("admin/dashboard", { page: "profile" });
@@ -172,17 +173,20 @@ static deleteFeedback(req, res) {
   static async addDonation(req, res) {
     if (req.method === "POST") {
       console.log("Received POST request for adding donation.");
-      
+
       try {
         // Log the incoming request body
         console.log("Request Body:", req.body);
-        
-        const { crowdfund_title, crowdfund_description, target_dana, status } = req.body;
-        const crowdfund_image = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : null; // Construct the full URL
+
+        const { crowdfund_title, crowdfund_description, target_dana, status } =
+          req.body;
+        const crowdfund_image = req.file
+          ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
+          : null; // Construct the full URL
 
         // Log the uploaded file information
         console.log("Uploaded File URL:", crowdfund_image);
-        
+
         // Validate user ID from session
         if (!req.session.user || !req.session.user.id) {
           console.error("User ID not found in session.");
@@ -198,11 +202,11 @@ static deleteFeedback(req, res) {
           status,
           id_user: req.session.user.id, // Assuming you have user ID in session
           created_at: new Date(), // Set created_at to current date
-          updated_at: new Date()  // Set updated_at to current date
+          updated_at: new Date(), // Set updated_at to current date
         });
 
         console.log("New Crowdfund Created:", newCrowdfund);
-      res.redirect("/admin/donations"); // Redirect to donations page after successful addition
+        res.redirect("/admin/donations"); // Redirect to donations page after successful addition
       } catch (error) {
         console.error("Error adding crowdfund:", error);
         res.status(500).send("Internal Server Error");
@@ -260,15 +264,20 @@ static deleteFeedback(req, res) {
       // Fetch all crowdfunds from the database
       const crowdfunds = await Crowdfund.findAll();
 
-      const crowdfundData = await Promise.all(crowdfunds.map(async (crowdfund) => {
-        const danaTerkumpul = await crowdfund.getDanaTerkumpul();
-        return {
-          ...crowdfund.toJSON(),
-          danaTerkumpul, // Add the resolved value to the crowdfund object
-        };
-      }));
+      const crowdfundData = await Promise.all(
+        crowdfunds.map(async (crowdfund) => {
+          const danaTerkumpul = await crowdfund.getDanaTerkumpul();
+          return {
+            ...crowdfund.toJSON(),
+            danaTerkumpul, // Add the resolved value to the crowdfund object
+          };
+        })
+      );
 
-      res.render("admin/dashboard", { page: "donations", crowdfunds: crowdfundData }); // Pass crowdfunds to the view
+      res.render("admin/dashboard", {
+        page: "donations",
+        crowdfunds: crowdfundData,
+      }); // Pass crowdfunds to the view
     } catch (error) {
       console.error("Error fetching crowdfunds:", error);
       res.status(500).send("Internal Server Error");
@@ -320,50 +329,50 @@ static deleteFeedback(req, res) {
     try {
       const donationId = req.params.id; // Get the donation ID from the request parameters
       const donation = await Donation.findByPk(donationId); // Fetch the donation from the database
-  
+
       if (!donation) {
         // If no donation is found, set danaTerkumpul to 0
         const crowdfund = await Crowdfund.findByPk(donationId);
-  
+
         if (!crowdfund) {
           return res.status(404).send("Crowdfunding not found");
         }
-  
+
         const comments = await Comment.findAll({
           where: { id_crowdfund: donationId },
-          order: [['created_at', 'DESC']],
+          order: [["created_at", "DESC"]],
         });
-  
+
         return res.render("admin/menu/detaildonation", {
           donation: {
             danaTerkumpul: 0, // No donations yet, so set to 0
           },
           crowdfund: crowdfund.toJSON(),
-          comments: comments.map(comment => comment.toJSON()),
+          comments: comments.map((comment) => comment.toJSON()),
         });
       }
-  
+
       // Fetch the total amount collected for this donation
-      const danaTerkumpul = await donation.getDanaTerkumpul() || 0; // Default to 0 if undefined
-  
+      const danaTerkumpul = (await donation.getDanaTerkumpul()) || 0; // Default to 0 if undefined
+
       const crowdfund = await Crowdfund.findByPk(donation.id_crowdfund);
-  
+
       if (!crowdfund) {
         return res.status(404).send("Crowdfunding not found");
       }
-  
+
       const comments = await Comment.findAll({
         where: { id_crowdfund: donation.id_crowdfund },
-        order: [['created_at', 'DESC']],
+        order: [["created_at", "DESC"]],
       });
-  
+
       res.render("admin/menu/detaildonation", {
         donation: {
           ...donation.toJSON(), // Convert the donation instance to a plain object
           danaTerkumpul, // Add the total amount collected to the donation object
         },
         crowdfund: crowdfund.toJSON(),
-        comments: comments.map(comment => comment.toJSON()),
+        comments: comments.map((comment) => comment.toJSON()),
       });
     } catch (error) {
       console.error("Error fetching donation details:", error);
@@ -388,7 +397,6 @@ static deleteFeedback(req, res) {
       res.status(500).send("Internal Server Error");
     }
   }
-
 }
 
 module.exports = AdminController;
