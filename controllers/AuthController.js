@@ -20,7 +20,8 @@ exports.login = async (req, res) => {
     }
 
     // Menyimpan user ke dalam session setelah login berhasil
-    req.session.user = user;
+    req.session.user = { id: user.id, email: user.email, role: user.role };
+    console.log('User session data:', req.session.user);
 
     // Redirect berdasarkan role
     if (user.role === "admin") {
