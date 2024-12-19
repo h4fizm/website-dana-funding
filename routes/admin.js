@@ -6,6 +6,7 @@ const router = express.Router();
 // Rute GET untuk menampilkan halaman
 router.get("/donations", AdminController.donations);
 router.get("/feedback", AdminController.feedback);
+
 router.get("/profile", AdminController.profile);
 router.get("/add-donation", AdminController.addDonation);
 
@@ -18,5 +19,7 @@ router.delete("/delete-user/:id", AdminController.deleteUser);
 router.get("/edit-user/:id", AdminController.editUser);
 // Menambahkan route untuk menangani POST request pada update user
 router.post("/edit-user/:id", AdminController.updateUser);
+// Route untuk menghapus feedback
+router.delete("/delete-feedback/:id", AdminController.deleteFeedback);
 
 module.exports = router;

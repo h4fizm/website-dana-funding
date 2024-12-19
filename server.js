@@ -2,11 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
+const methodOverride = require("method-override"); // Hanya sekali impor
 const db = require("./config/db");
-const adminRouter = require("./routes/admin");
 
 const app = express();
-const methodOverride = require("method-override");
 
 // Middleware untuk override method HTTP
 app.use(methodOverride("_method"));
@@ -26,7 +25,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: { secure: false }, // Ubah menjadi true jika menggunakan HTTPS
   })
 );
 
@@ -75,10 +74,8 @@ const paymentRoutes = require("./routes/payment");
 app.use("/", paymentRoutes);
 
 // Admin route
-app.use("/admin", adminRouter);
-// app.get("/admin/dashboard", isAdmin, (req, res) =>
-//   res.render("admin/dashboard")
-// );
+const adminRouter = require("./routes/admin");
+app.use("/admin", adminRouter); // Gunakan router admin di sini
 
 // Logout
 app.post("/logout", (req, res) => {

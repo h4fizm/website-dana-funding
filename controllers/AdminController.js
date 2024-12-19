@@ -1,21 +1,54 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User"); // Model User
+const Feedback = require("../models/Feedback"); // Model User
 
 class AdminController {
   static donations(req, res) {
     res.render("admin/dashboard", { page: "donations" });
   }
 
-  static feedback(req, res) {
-    res.render("admin/dashboard", { page: "feedback" });
+  // Controller untuk menampilkan data feedback
+  static async feedback(req, res) {
+    try {
+      // Ambil semua data feedback dari database
+      const feedbacks = await Feedback.findAll();
+
+      // Render halaman dengan data feedback yang dikirimkan
+      res.render("admin/dashboard", {
+        page: "feedback",
+        feedbacks: feedbacks, // Kirim data feedback ke tampilan
+      });
+    } catch (error) {
+      console.error("Error fetching feedback data:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+
+   // Fungsi untuk menghapus feedback
+static deleteFeedback(req, res) {
+  const feedbackId = req.params.id;
+  console.log("Menghapus feedback dengan ID:", feedbackId);
+
+  // Hapus feedback berdasarkan ID
+  Feedback.destroy({
+    where: { id: feedbackId },
+  })
+    .then(() => {
+      res.status(200).json({ message: "Feedback berhasil dihapus" }); // Kirim respons sukses
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: "Terjadi kesalahan saat menghapus feedback." }); // Kirim respons error
+    });
+}
+
+
+  static profile(req, res) {
+    res.render("admin/dashboard", { page: "profile" });
   }
 
   static users(req, res) {
     res.render("admin/dashboard", { page: "users" });
-  }
-
-  static profile(req, res) {
-    res.render("admin/dashboard", { page: "profile" });
   }
 
   static users(req, res) {
@@ -139,6 +172,51 @@ class AdminController {
   static addDonation(req, res) {
     res.render("admin/dashboard", { page: "adddonation" });
   }
+
+  static updateProfile(req, res) {
+    console.log(req.session.user); // Tambahkan log untuk memeriksa isi req.session.user
+    const userId = req.session.user.id; // Ambil ID pengguna dari session
+    const { name, email, password } = req.body;
+
+    // Validasi input jika perlu
+    if (!name || !email) {
+      return res.status(400).send("Semua field harus diisi.");
+    }
+
+    // Cari user berdasarkan ID
+    User.findByPk(userId)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send("User tidak ditemukan");
+        }
+
+        // Update data user
+        user.name = name;
+        user.email = email;
+
+        // Jika password diisi, enkripsi dan update
+        if (password) {
+          user.password = bcrypt.hashSync(password, 10);
+        }
+
+        // Simpan perubahan ke database
+        user
+          .save()
+          .then(() => {
+            res.redirect("/admin/profile"); // Redirect ke halaman profil setelah berhasil update
+          })
+          .catch((err) => {
+            console.error(err);
+            res.status(500).send("Terjadi kesalahan saat memperbarui profil.");
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error saat mengambil data pengguna.");
+      });
+  }
+
+ 
 }
 
 module.exports = AdminController;
