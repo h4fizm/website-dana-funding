@@ -10,6 +10,7 @@ router.get("/add-donation", AdminController.addDonation);
 router.get("/detail-crowdfund/:id", AdminController.detailCrowdfund);
 router.get("/delete-crowdfund/:id", AdminController.deleteCrowdfund);
 router.get("/edit-crowdfund/:id", AdminController.editCrowdfund);
+router.post("/edit-crowdfund-logic/:id", upload, AdminController.editCrowdfundLogic);
 // Use the upload middleware for the POST route
 router.post("/add-donation", upload, AdminController.addDonation); // Handle file upload
 

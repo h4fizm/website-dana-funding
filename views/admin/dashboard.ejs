@@ -47,14 +47,14 @@
 
       <div class="container-fluid py-2">
         <!-- Konten Utama -->
-        <% if (page === 'donations') { %> <%- include('menu/donationtable') %>
-        <% } %> <% if (page === 'feedback') { %> <%-
-        include('menu/feedbacktable') %> <% } %> <% if (page === 'users') { %>
-        <%- include('menu/usertable') %> <% } %> <% if (page === 'profile') { %>
-        <%- include('menu/userprofile') %> <% } %> <% if (page === 'adduser') {
-        %> <%- include('menu/adduser') %> <% } %> <% if (page === 'adddonation')
-        { %> <%- include('menu/adddonation') %> <% } %> <% if (page ===
-        'edituser') { %> <%- include('menu/edituser') %> <% } %>
+        <% if (page === 'donations') { %> <%- include('menu/donationtable') %> <% } %>
+        <% if (page === 'editdonation') { %> <%- include('menu/editdonation') %> <% } %>
+        <% if (page === 'feedback') { %> <%- include('menu/feedbacktable') %> <% } %>
+        <% if (page === 'users') { %> <%- include('menu/usertable') %> <% } %>
+        <% if (page === 'profile') { %> <%- include('menu/userprofile') %> <% } %>
+        <% if (page === 'adduser') { %> <%- include('menu/adduser') %> <% } %>
+        <% if (page === 'adddonation') { %> <%- include('menu/adddonation') %> <% } %>
+        <% if (page === 'edituser') { %> <%- include('menu/edituser') %> <% } %>
         <!-- Content -->
       </div>
 

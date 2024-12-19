@@ -164,22 +164,6 @@ function formatRupiah(amount) {
                 </div>
               <% }); %>
             <% } %>
-            <!-- Comment Input Form -->
-            <form action="/comment" method="POST" class="mt-3">
-              <input type="hidden" name="id_crowdfund" value="<%= crowdfund.id %>">
-              <div class="form-group">
-                <label for="comment" class="form-label font-weight-bold">Tambahkan Komentar</label>
-                <textarea
-                  class="form-control"
-                  id="comment"
-                  name="comment"
-                  rows="3"
-                  required
-                  style="background-color: #f6f6f6; padding: 10px;"
-                ></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary mt-2">Tambah</button>
-            </form>
           </div>
         </div>
       </div>
