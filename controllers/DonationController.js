@@ -4,19 +4,19 @@ const Comment = require("../models/Comment");
 
 exports.getDonationDetails = async (req, res) => {
   try {
-    const donationId = req.params.id; // Get the donation ID from the request parameters
-    const donation = await Donation.findByPk(donationId); // Fetch the donation from the database
+    const crowdfundId = req.params.id; // Get the crowdfund ID from the request parameters
+    const donation = await Donation.findOne({ where: { id_crowdfund: crowdfundId } }); // Fetch the donation from the database using the crowdfund ID
 
     if (!donation) {
       // If no donation is found, set danaTerkumpul to 0
-      const crowdfund = await CrowdFunding.findByPk(donationId);
+      const crowdfund = await CrowdFunding.findByPk(crowdfundId);
 
       if (!crowdfund) {
         return res.status(404).send("Crowdfunding not found");
       }
 
       const comments = await Comment.findAll({
-        where: { id_crowdfund: donationId },
+        where: { id_crowdfund: crowdfundId },
         order: [['created_at', 'DESC']],
       });
 
