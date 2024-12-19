@@ -106,7 +106,7 @@ function formatRupiah(amount) {
                   </div>
                   <div class="row mt-4">
                     <div class="col-md-2 text-start">
-                      <a href="/user/catalog">
+                      <a href="/admin/donations">
                         <button
                           class="btn bg-gradient-warning btn-md mt-3 mb-0"
                         >
@@ -115,21 +115,21 @@ function formatRupiah(amount) {
                       </a>
                     </div>
                     <div class="col-md-6 text-center">
-                      <button id="add-to-favorites" class="btn bg-gradient-success btn-md mt-3 mb-0" data-crowdfund-id="<%= crowdfund.id %>">
-                        Tambahkan ke Favorit
-                      </button>
+                      <a href="/admin/edit-crowdfund/<%= crowdfund.id %>">
+                        <button class="btn bg-gradient-info btn-md mt-3 mb-0">
+                          Edit
+                        </button>
+                      </a>
                     </div>
                     <div class="col-md-4 text-end">
                       <% if (crowdfund.status === 'DITUTUP') { %>
-                        <button class="btn bg-gradient-info btn-md mt-3 mb-0" style="opacity: 0.2;">
-                          Donasi
+                        <button class="btn bg-gradient-danger btn-md mt-3 mb-0"">
+                          DITUTUP
                         </button>
                       <% } else { %>
-                        <a href="/payment?id=<%= crowdfund.id %>">
-                          <button class="btn bg-gradient-info btn-md mt-3 mb-0">
-                            Donasi
-                          </button>
-                        </a>
+                        <button class="btn bg-gradient-success btn-md mt-3 mb-0">
+                          DIBUKA
+                        </button>
                       <% } %>
                     </div>
                   </div>
@@ -156,6 +156,9 @@ function formatRupiah(amount) {
               <% comments.forEach((comment, index) => { %>
                 <div class="comment">
                   <p><strong><%= index + 1 %>:</strong> <%= comment.comment %></p>
+                  <form action="/admin/delete-comment/<%= comment.id %>" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
                 </div>
               <% }); %>
             <% } %>

@@ -1,3 +1,9 @@
+<% 
+function formatRupiah(amount) {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Format with dots
+}
+%>
+
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
   <head>
@@ -185,11 +191,12 @@
             <h5 class="modal-title" id="successModalLabel">Donasi berhasil!</h5>
           </div>
           <div class="modal-body">
-            Donasi telah berhasil, terima kasih atas kontribusi Anda!
+            <!-- Content will be updated by JavaScript -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="closeModal('successModal')">Close</button>
             <a href="/donation/<%= crowdfund.id %>" class="btn btn-primary">Kembali ke Detail Program</a>
+            <button type="button" class="btn btn-success" onclick="printDonationDetails()">Print</button>
           </div>
         </div>
       </div>
@@ -229,7 +236,7 @@
       }
 
       // Check if the donation was successful or failed
-      const urlParams = new URLSearchParams(window.location.search);
+      var urlParams = new URLSearchParams(window.location.search);
       const donationSuccess = urlParams.get('success');
       const donationError = urlParams.get('error');
 
@@ -248,6 +255,35 @@
         event.preventDefault();
         // Redirect to the donation details page
         window.location.href = `/donation/${id}`;
+      }
+    </script>
+
+    <script>
+      // Function to format Rupiah
+      function formatRupiah(amount) {
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
+      // Get URL parameters
+      var urlParams = new URLSearchParams(window.location.search);
+      const value = urlParams.get('value');
+      const method = urlParams.get('method');
+
+      // Update the modal body with the formatted value and method
+      document.addEventListener('DOMContentLoaded', () => {
+        const modalBody = document.querySelector('#successModal .modal-body');
+        if (modalBody) {
+          modalBody.innerHTML = `
+            Donasi telah berhasil, terima kasih atas kontribusi Anda!<br>
+            Rp${formatRupiah(value)} melalui ${method}
+          `;
+        }
+      });
+    </script>
+
+    <script>
+      function printDonationDetails() {
+        window.print();
       }
     </script>
   </body>

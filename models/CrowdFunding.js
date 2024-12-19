@@ -32,14 +32,6 @@ const CrowdFunding = sequelize.define(
       allowNull: false,
       defaultValue: "DIBUKA",
     },
-    id_user: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "users",
-        key: "id",
-      },
-      allowNull: false,
-    },
     created_at: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -64,6 +56,20 @@ CrowdFunding.prototype.getDanaTerkumpul = async function() {
     });
     const totalDonations = donations.reduce((acc, donation) => acc + donation.value, 0) || 0;
     return totalDonations;
+};
+
+CrowdFunding.getFavoriteCrowdfundsByUser = async function(userId) {
+  const favoriteCrowdfunds = await sequelize.query(`
+      SELECT c.*
+      FROM favoritecrowdfunds fc
+      JOIN crowdfunds c ON fc.id_crowdfund = c.id
+      WHERE fc.id_user = :userId
+  `, {
+      replacements: { userId },
+      model: CrowdFunding,
+      mapToModel: true, // This will map the results to the CrowdFunding model
+  });
+  return favoriteCrowdfunds;
 };
 
 module.exports = CrowdFunding;
