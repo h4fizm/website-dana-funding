@@ -91,6 +91,9 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something went wrong! Please try again later.");
 });
 
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Jalankan server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

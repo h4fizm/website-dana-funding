@@ -321,7 +321,42 @@ class AdminController {
     if (!crowdfund) {
       return res.status(404).send("Crowdfund not found");
     }
-    res.render("admin/dashboard", { page: "editcrowdfund", crowdfund });
+    // Render the edit form with existing donation details
+    res.render("admin/dashboard", { page: "editdonation", donation: crowdfund.toJSON() });
+  }
+
+  static async editCrowdfundLogic(req, res) {
+    const donationId = req.params.id;
+
+    try {
+      console.log("Received data:", JSON.stringify(req.body)); // Log the request body in a readable format
+
+      const donation = await Crowdfund.findByPk(donationId);
+      if (!donation) {
+        return res.status(404).json({ success: false, message: "Donation not found" });
+      }
+
+      const { crowdfund_title, crowdfund_description, target_dana, status } = req.body;
+
+      if (!crowdfund_title || !target_dana || !status) {
+        return res.status(400).json({ success: false, message: "All fields are required." });
+      }
+
+      donation.crowdfund_title = crowdfund_title;
+      donation.crowdfund_description = crowdfund_description;
+      donation.target_dana = target_dana;
+      donation.status = status;
+
+      if (req.file) {
+        donation.crowdfund_image = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+      }
+
+      await donation.save();
+      return res.json({ success: true, message: "Donation updated successfully" });
+    } catch (error) {
+      console.error("Error editing donation:", error);
+      res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
   }
 
   static async detailCrowdfund(req, res) {
